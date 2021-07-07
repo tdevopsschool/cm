@@ -20,3 +20,16 @@ terraform plan -var-file=secrets.tfvars
 ```shell
 terraform apply -var-file=secrets.tfvars
 ```
+
+5. Print IPs
+
+```shell
+terraform output instances_ip
+```
+
+6. Ansible integration example
+```shell
+ansible-playbook \
+    -i "$(terraform output instances_ip)" \
+    some/path/playbook.yml
+```

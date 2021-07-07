@@ -16,7 +16,7 @@ provider "vra7" {
 }
 
 
-resource "vra7_deployment" "this" {
+resource "vra7_deployment" "playground" {
   count = var.instances_count
   catalog_item_name = var.catalog_item_name
   lease_days = var.lease_days

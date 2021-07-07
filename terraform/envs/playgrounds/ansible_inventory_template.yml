@@ -1,0 +1,6 @@
+# ${timestamp()}
+all:
+    hosts:
+%{ for server in instances_ip ~}
+        ${server}:
+%{ endfor ~}
