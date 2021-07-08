@@ -6,7 +6,7 @@
 *.box
 *.pyc
 *.log
-terraform/envs/playgrounds/inventory.yml
+terraform/envs/vcloud/inventory.yml
 
 # Local .terraform directories
 **/.terraform/*
