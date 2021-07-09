@@ -1,0 +1,4 @@
+---
+gitlab_runner_python_module_version: '1.12.1'
+gitlab_runner_register: false
+gitlab_runner_registration_token:

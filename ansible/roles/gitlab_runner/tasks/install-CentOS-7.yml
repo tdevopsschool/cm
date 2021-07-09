@@ -1,0 +1,30 @@
+---
+- name: prepare repos
+  package:
+    name: yum-utils
+    state: present
+  retries: 30
+  delay: 5
+  register: result
+  until: result is not failed
+
+- name: Add GitLab Runner repository
+  yum_repository:
+    name: gitlab-runner
+    baseurl: https://packages.gitlab.com/runner/gitlab-runner/el/7/$basearch
+    gpgcheck: false
+    repo_gpgcheck: false
+    gpgkey: https://packages.gitlab.com/gpg.key
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: '300'
+    description: GitLab Runner Stable
+
+- name: Install gitlab-runner
+  package:
+    name: gitlab-runner
+    state: present
+  retries: 30
+  delay: 5
+  register: result
+  until: result is not failed

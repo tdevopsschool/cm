@@ -1,0 +1,21 @@
+name: Test Homework
+on: [push, pull_request]
+
+jobs:
+  gitlab_runner:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - default
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - name: molecule
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug
+          molecule_working_dir: "${{ github.repository }}/ansible/roles/gitlab_runner"

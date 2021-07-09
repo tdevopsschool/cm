@@ -1,0 +1,13 @@
+---
+- name: install gitlab-runner
+  hosts: all
+  become: true
+  become_user: root
+  roles:
+    - role: gitlab_runner
+  vars_prompt:
+    - name: gitlab_runner_registration_token
+      prompt: 'Enter registration token from gitlab.com'
+      private: true
+  vars:
+    gitlab_runner_register: true
