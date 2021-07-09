@@ -24,6 +24,7 @@
 - name: Register gitlab-runner
   # noqa no-changed-when
   # noqa command-instead-of-shell
+  # noqa 305
   shell: gitlab-runner register \
     --non-interactive \
     --url "https://gitlab.com" \
