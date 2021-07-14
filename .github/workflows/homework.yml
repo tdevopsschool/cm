@@ -18,4 +18,4 @@ jobs:
         uses: gofrolist/molecule-action@v2
         with:
           molecule_options: --debug
-          molecule_working_dir: "${{ github.repository }}/ansible/roles/gitlab_runner"
+          molecule_working_dir: "${{ github.repository }}/part02/ansible/roles/gitlab_runner"
