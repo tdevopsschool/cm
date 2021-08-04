@@ -19,18 +19,19 @@
       package:
         name: gitlab-runner
         state: present
-    - name: Configure gitlab-runner
-      copy:
-        owner: root
-        group: root
-        mode: 0400
-        dest: /etc/gitlab-runner/config.toml
-        content: |+
-          concurrent = 1
-          [[runners]]
-            name = "shell executor runner"
-            executor = "shell"
-            shell = "bash"
+    #In order to verify that runner is not registered twice, need to check content of /etc/gitlab-runner/config.toml,
+    #but parsing it is too complicated, so check file size instead.
+    #When gitlab runner is installed, but no runners are registered, config is 77 bytes. After one shell runner registration, it's 327 bytes
+    #100 bytes seems like a good threshold to distinguish between these two cases.
+    - name: Gather info about runner config
+      stat:
+        path: /etc/gitlab-runner/config.toml
+      register: result
+    - name: Register gitlab-runner
+      command:
+        cmd: gitlab-runner register --non-interactive --url https://gitlab.com/ --registration-token MmSh7wAWk9X4KrkTBwUB --name "shell executor runner" --executor shell
+      #        creates: /etc/gitlab-runner/config.toml  #not suitable - file is already created during install step
+      when: result.stat.exists and result.stat.size < 100
     - name: Start gitlab-runner.service
       systemd:
         name: gitlab-runner.service
