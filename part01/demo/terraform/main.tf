@@ -1,31 +1,32 @@
-terraform {
-  required_providers {
-    vra7 = {
-      source = "vmware/vra7"
-      version = "2.0.0"
-    }
+# https://wiki.centos.org/Cloud/AWS
+data "aws_ami" "centos" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["CentOS 7*"]
   }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  owners = ["125523088429"]
 }
 
-provider "vra7" {
-  username = var.vclod_username
-  password = var.vcloud_password
-  tenant   = var.vcloud_tenant
-  host     = var.vcloud_host
-  insecure = "true"
-}
+resource "aws_instance" "gitlab-runner" {
+  ami                    = data.aws_ami.centos.id
+  instance_type          = "t3.micro"
+  key_name               = aws_key_pair.ssh_key.key_name
+  availability_zone      = var.az
+  subnet_id              = aws_subnet.subnet.id
+  vpc_security_group_ids = [aws_security_group.ssh.id]
 
-resource "vra7_deployment" "playground" {
-  count = 1
-  catalog_item_name = "CentOS 7 1908"
-  lease_days = 10
-  reasons = "Create test playgorund. Created by terraform"
-  businessgroup_name = "DevOps School"
-
-  resource_configuration  {
-      component_name = "centos7"
-      configuration = {
-            "root.password" = var.root_password
-        }
-    }
+  tags = var.tags
 }
