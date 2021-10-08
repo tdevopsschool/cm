@@ -1,10 +1,9 @@
-# https://wiki.centos.org/Cloud/AWS
-data "aws_ami" "centos" {
+data "aws_ami" "amzn" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["CentOS 7*"]
+    values = ["amzn2-ami-hvm-*gp2"]
   }
 
   filter {
@@ -17,11 +16,11 @@ data "aws_ami" "centos" {
     values = ["x86_64"]
   }
 
-  owners = ["125523088429"]
+  owners = ["amazon"]
 }
 
 resource "aws_instance" "gitlab-runner" {
-  ami                    = data.aws_ami.centos.id
+  ami                    = data.aws_ami.amzn.id
   instance_type          = "t3.micro"
   key_name               = aws_key_pair.ssh_key.key_name
   availability_zone      = var.az

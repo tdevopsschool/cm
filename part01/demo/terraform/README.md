@@ -1,34 +1,15 @@
 # How to use it?
 
-1. Create the `secrets.tfvars` according example
-2. Init terraform
-
-```shell
-terraform init -backend-config=secrets.tfvars -upgrade=true
-```
-
-3. Review changes
-
-```shell
-terraform plan -var-file=secrets.tfvars
-```
-
-4. Apply changes
-
-```shell
-terraform apply -var-file=secrets.tfvars
-```
-
-5. Print IPs
-
-```shell
-terraform output instances_ip
-```
-
-6. Ansible integration example
+1. Create the `secrets.tfvars` according example.
+2. Init terraform: `terraform init -backend-config=secrets.tfvars -upgrade=true`
+3. Review changes: `terraform plan -var-file=secrets.tfvars`
+4. Apply changes:`terraform apply -var-file=secrets.tfvars`
+5. Print IPs: `terraform output output public_ip`
+6. Check connection: `ssh -i path/to/key ec2-user@$(terraform output -raw public_ip)`
+7. Ansible integration example:
 
 ```shell
 ansible-playbook \
-    -i "$(terraform output instances_ip)" \
+    -i "$(terraform output -raw public_ip) ," \
     some/path/playbook.yml
 ```

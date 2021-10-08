@@ -11,16 +11,13 @@ resource "aws_subnet" "subnet" {
   tags                    = var.tags
 }
 
-# IMA Internet gateway
 resource "aws_internet_gateway" "gateway" {
   vpc_id = aws_vpc.vpc.id
   tags   = var.tags
 }
 
-# Routing table for infrastructure subnet 1
 resource "aws_route_table" "route-table" {
   vpc_id = aws_vpc.vpc.id
-
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.gateway.id
@@ -28,7 +25,6 @@ resource "aws_route_table" "route-table" {
   tags = var.tags
 }
 
-# RT associations
 resource "aws_route_table_association" "route-table-association" {
   subnet_id      = aws_subnet.subnet.id
   route_table_id = aws_route_table.route-table.id

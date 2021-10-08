@@ -12,10 +12,9 @@ variable "tags" {
   type = map(any)
 
   default = {
-    Environment = "TBD"
-    Project     = "TBD"
+    Environment = "sandbox"
+    ManagedBy   = "ansible"
     CreatedBy   = "Terraform"
-    Owner       = "TBD"
   }
 }
 

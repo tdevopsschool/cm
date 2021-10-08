@@ -1,0 +1,22 @@
+# https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html
+# https://docs.ansible.com/ansible/latest/plugins/inventory.html
+# ansible-galaxy collection install amazon.aws
+
+# Naming a plugin has one requirement: the suffix portion of the name must be: _aws_ec2.yml or _aws_ec2.yaml
+
+plugin: amazon.aws.aws_ec2
+
+#set aws_access_key and secret_key.
+# aws_access_key: ***
+# aws_secret_key: ***
+# aws_security_token: ***
+
+regions:
+  - eu-central-1
+# https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html#options
+filters:
+  tag:Environment:
+      - sandbox
+  instance-state-name: running
+compose:
+  ansible_host: public_ip_address
