@@ -1,0 +1,37 @@
+---
+- name: Verify that gitlab_runner_registration_token is defined if required
+  assert:
+    that:
+      - gitlab_runner_registration_token != None
+      - gitlab_runner_registration_token | length > 0
+  when: gitlab_runner_register
+
+- name: Do distr specific tasks
+  include_tasks: install-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml
+
+- name: Install gitlab-runner
+  package:
+    name: gitlab-runner
+    state: present
+  retries: 30
+  delay: 5
+  register: result
+  until: result is not failed
+
+- name: Create gitlab-runner config template
+  template:
+    owner: root
+    group: root
+    mode: 0400
+    dest: "{{ gitlab_runner_template_path }}"
+    src: config.toml.template
+
+- name: Register gitlab-runner
+  include_tasks: register.yml
+  when: gitlab_runner_register
+
+- name: Start gitlab-runner.service
+  systemd:
+    name: gitlab-runner.service
+    state: started
+    enabled: true

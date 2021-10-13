@@ -1,0 +1,31 @@
+---
+- name: Create gitlab-runner config template
+  template:
+    owner: root
+    group: root
+    mode: 0400
+    dest: "{{ gitlab_runner_config_path }}"
+    src: config.toml
+
+- name: Ensure config.toml contains registred executor
+  lineinfile:
+    path: "{{ gitlab_runner_config_path }}"
+    regexp: '^url = "https://gitlab.com"$'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: gitlab_result_registred_executor
+
+- name: Register gitlab-runner
+  # noqa no-changed-when
+  # noqa command-instead-of-shell
+  # noqa 305
+  shell: gitlab-runner register --non-interactive
+  environment:
+    CI_SERVER_URL: https://gitlab.com
+    RUNNER_EXECUTOR: shell
+    REGISTRATION_TOKEN: "{{ gitlab_runner_registration_token }}"
+    TEMPLATE_CONFIG_FILE: "{{ gitlab_runner_config_path }}"
+  changed_when: false
+  when: not gitlab_result_registred_executor.found
+  notify: Restart gitlab-runner.service
