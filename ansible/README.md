@@ -19,7 +19,7 @@ ansible -u ec2-user -i sandbox_aws_ec2.yml -m ping all
 ```bash
 ansible-playbook \
     -vvv \
-    -e "gitlab_runner_registration_token=hgFYckg7S_GLiqsJoqcT" \
+    -e "gitlab_runner_registration_token=your-token" \
     -u ec2-user \
     -i ~/cm/ansible/sandbox_aws_ec2.yml \
     ~/cm/ansible/install_gitlab_runner.yml

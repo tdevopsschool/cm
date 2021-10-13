@@ -13,7 +13,7 @@ Lightweight version of https://github.com/tdevopsschool/ansible-course
     - install ansible
     - install terraform
 2. Create environment in AWS via terraform
-3. Install & register girlab-runner in AWS via ansible
+3. Install & register gitlab-runner in AWS via ansible
 
 ## Links
 
