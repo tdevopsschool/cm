@@ -15,5 +15,5 @@ variable "tags" {
 
 variable "az" {
   type    = string
-  default = "eu-central-1a"
+  default = "us-east-1a"
 }

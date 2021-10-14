@@ -21,7 +21,7 @@ data "aws_ami" "amzn" {
 
 resource "aws_instance" "ec2" {
   ami                    = data.aws_ami.amzn.id
-  instance_type          = "t3.micro"
+  instance_type          = "t2.micro"
   key_name               = aws_key_pair.ssh_key.key_name
   availability_zone      = var.az
   subnet_id              = var.aws_subnet_id
