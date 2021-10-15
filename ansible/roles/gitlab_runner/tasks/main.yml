@@ -18,13 +18,13 @@
   register: result
   until: result is not failed
 
-- name: Create gitlab-runner config template
+- name: Create gitlab-runner config
   template:
     owner: root
     group: root
     mode: 0400
-    dest: "{{ gitlab_runner_template_path }}"
-    src: config.toml.template
+    dest: "{{ gitlab_runner_config_path }}"
+    src: config.toml
 
 - name: Register gitlab-runner
   include_tasks: register.yml

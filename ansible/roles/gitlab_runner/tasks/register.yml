@@ -8,16 +8,6 @@
   changed_when: false
   register: gitlab_result_registred_executor
 
-- name: Create gitlab-runner config template
-  template:
-    owner: root
-    group: root
-    mode: 0400
-    dest: "{{ gitlab_runner_config_path }}"
-    src: config.toml
-  when: not gitlab_result_registred_executor.found
-  register: gitlab_result_config_template
-
 - name: Register gitlab-runner
   # noqa command-instead-of-shell
   # noqa 305
