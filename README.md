@@ -4,6 +4,7 @@ Lightweight version of https://github.com/tdevopsschool/ansible-course
 
 - [ansible](ansible/README.md)
 - [terraform](terraform/envs/aws/README.md)
+  - [terraform tricks](docs/terraform_tricks.md)
 - [aws & mfa](docs/aws_mfa.md)
 
 ## Homework
