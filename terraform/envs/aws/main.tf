@@ -11,4 +11,5 @@ module "gitlab_runner" {
   ssh_key               = var.ssh_key
   aws_subnet_id         = module.aws_network.aws_subnet_id
   aws_security_group_id = module.aws_network.aws_security_group_id
+  instances_count       = 2
 }

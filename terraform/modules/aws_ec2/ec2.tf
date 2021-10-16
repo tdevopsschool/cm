@@ -20,6 +20,7 @@ data "aws_ami" "amzn" {
 }
 
 resource "aws_instance" "ec2" {
+  count                  = var.instances_count
   ami                    = data.aws_ami.amzn.id
   instance_type          = "t2.micro"
   key_name               = aws_key_pair.ssh_key.key_name

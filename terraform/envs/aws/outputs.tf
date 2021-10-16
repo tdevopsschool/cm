@@ -1,3 +1,3 @@
-output "public_ip" {
-  value = module.gitlab_runner.public_ip
+output "public_ips" {
+  value = join(", ",module.gitlab_runner.public_ips)
 }

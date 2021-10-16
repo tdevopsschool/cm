@@ -17,3 +17,7 @@ variable "az" {
 variable "ssh_key" {
   type    = string
 }
+
+variable "instances_count" {
+  default = 1
+}
