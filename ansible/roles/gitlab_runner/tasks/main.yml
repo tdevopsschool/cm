@@ -24,6 +24,20 @@
   register: result
   until: result is not failed
 
+# we search for the line in the config
+# In the next tasks we will use for detecting runner registration status
+- name: Ensure config.toml contains registred executor
+  lineinfile:
+    path: "{{ gitlab_runner_config_path }}"
+    line: '  name = "{{ inventory_hostname }}"'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: gitlab_result_registred_executor
+
+# update the config only if the runner is not presented
+# this check is required because gitlab-runner -register command adds strings into the config
+# we create idempotent roles so we should care about it
 - name: Create gitlab-runner config
   template:
     owner: root
@@ -31,10 +45,13 @@
     mode: 0400
     dest: "{{ gitlab_runner_config_path }}"
     src: config.toml
-  register: gitlab_result_config
+  when:
+    - not gitlab_result_registred_executor.found
+  notify: Restart gitlab-runner.service
 
-- name: Register gitlab-runner
+- name: Include register gitlab-runner tasks
   include_tasks: register.yml
+  # this key appears because in case of testing role via molecule we should register gitlab-runner each time
   when: gitlab_runner_register
 
 - name: Start gitlab-runner.service

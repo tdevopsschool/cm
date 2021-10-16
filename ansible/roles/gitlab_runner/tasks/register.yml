@@ -1,23 +1,23 @@
 ---
-# we search for the line in the config
-# In the next we will use for detecting runner registration status
-- name: Ensure config.toml contains registred executor
-  lineinfile:
-    path: "{{ gitlab_runner_config_path }}"
-    line: '  name = "{{ inventory_hostname }}"'
-    state: absent
-  check_mode: true
-  changed_when: false
-  register: gitlab_result_registred_executor
+# We create template for runner registration
+- name: Create gitlab-runner config template
+  template:
+    owner: root
+    group: root
+    mode: 0400
+    dest: "{{ gitlab_runner_config_template_path }}"
+    src: config.toml
+  register: gitlab_result_config_template
 
+# we run registration only if the runner is not presented in the config and the template has been changed
 - name: Register gitlab-runner
   command: gitlab-runner register --non-interactive
   environment:
     CI_SERVER_URL: https://gitlab.com
     RUNNER_EXECUTOR: shell
     REGISTRATION_TOKEN: "{{ gitlab_runner_registration_token }}"
-    TEMPLATE_CONFIG_FILE: "{{ gitlab_runner_config_path }}"
+    TEMPLATE_CONFIG_FILE: "{{ gitlab_runner_config_template_path }}"
   when:
     - not gitlab_result_registred_executor.found
-    - gitlab_result_config.changed
+    - gitlab_result_config_template.changed
   notify: Restart gitlab-runner.service

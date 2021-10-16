@@ -1,2 +1,3 @@
 ---
 gitlab_runner_config_path: /etc/gitlab-runner/config.toml
+gitlab_runner_config_template_path: /etc/gitlab-runner/config.toml.template
