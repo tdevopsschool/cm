@@ -6,9 +6,15 @@
       - gitlab_runner_registration_token | length > 0
   when: gitlab_runner_register
 
+# Idea is to decrease the amount of code.
+# We suppose that in case of supported system we just include the required file
 - name: Do distr specific tasks
   include_tasks: install-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml
 
+# usually gitlab runner package has the same name at all platforms
+# Retries and delay are required to avoid flacky network issue
+# it tries to exec the task 30 times with 5 sec delay till the success
+# if it failed 30 times to install then the task will be marked as failed
 - name: Install gitlab-runner
   package:
     name: gitlab-runner
@@ -25,6 +31,7 @@
     mode: 0400
     dest: "{{ gitlab_runner_config_path }}"
     src: config.toml
+  register: gitlab_result_config
 
 - name: Register gitlab-runner
   include_tasks: register.yml

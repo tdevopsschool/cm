@@ -1,4 +1,6 @@
 ---
+# we search for the line in the config
+# In the next we will use for detecting runner registration status
 - name: Ensure config.toml contains registred executor
   lineinfile:
     path: "{{ gitlab_runner_config_path }}"
@@ -9,9 +11,7 @@
   register: gitlab_result_registred_executor
 
 - name: Register gitlab-runner
-  # noqa command-instead-of-shell
-  # noqa 305
-  shell: gitlab-runner register --non-interactive
+  command: gitlab-runner register --non-interactive
   environment:
     CI_SERVER_URL: https://gitlab.com
     RUNNER_EXECUTOR: shell
@@ -19,5 +19,5 @@
     TEMPLATE_CONFIG_FILE: "{{ gitlab_runner_config_path }}"
   when:
     - not gitlab_result_registred_executor.found
-    - gitlab_result_config_template.changed
+    - gitlab_result_config.changed
   notify: Restart gitlab-runner.service
