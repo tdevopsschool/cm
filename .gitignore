@@ -23,4 +23,4 @@ terraform/envs/vcloud/inventory.yml
 crash.log
 
 # Roles checked out via ansible-galaxy
-part02/roles/*
+aws_creds.sh

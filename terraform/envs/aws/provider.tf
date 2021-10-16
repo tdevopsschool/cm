@@ -1,3 +1,4 @@
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs
 provider "aws" {
 # uncomment lines bellow if you want to provide creds via tfvars file
 #  access_key   = var.access_key
