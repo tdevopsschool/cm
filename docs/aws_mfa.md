@@ -30,7 +30,7 @@ Usually, application supports passing the creds via config file. In case of terr
 ```hcl
 access_key = "example-access-key-as-in-previous-output"
 secret_key = "example-key-id-as-in-previous-output"
-session_token = "example-session-token-as-in-previous-output"
+token = "example-session-token-as-in-previous-output"
 ```
 
 or set in ansible dynamic inventory:
