@@ -13,11 +13,10 @@
 - name: Register gitlab-runner
   command: gitlab-runner register --non-interactive
   environment:
-    CI_SERVER_URL: https://gitlab.com
+    CI_SERVER_URL: "{{ ci_server_url }}"
     RUNNER_EXECUTOR: shell
     REGISTRATION_TOKEN: "{{ gitlab_runner_registration_token }}"
     TEMPLATE_CONFIG_FILE: "{{ gitlab_runner_config_template_path }}"
   when:
-    - not gitlab_result_registred_executor.found
-    - gitlab_result_config_template.changed
+    - (verified_runners.stderr.find("Verifying runner... is removed") != -1) or (configured_runners.stderr.find('\n' +  (ansible_hostname)) == -1)
   notify: Restart gitlab-runner.service
