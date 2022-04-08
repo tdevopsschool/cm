@@ -9,7 +9,7 @@ Vagrant.configure('2') do |config|
   # https://www.goncharov.xyz/it/keepass.html
   config.ssh.forward_agent = true
 
-  # config.vm.provision "shell", path: "vagrant/provision_me.sh"
+  # config.vm.provision "shell", path: "vagrant/provision_devtoolkit.sh"
 
   config.vm.provision 'ansible_local' do |ansible|
     # https://www.vagrantup.com/docs/provisioning/ansible_local

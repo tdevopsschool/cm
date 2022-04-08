@@ -1,4 +1,4 @@
 ---
 - src: ultral.ansible_development
 - src: andrewrothstein.terraform
-- src: christiangda.awscli
+#- src: christiangda.awscli
