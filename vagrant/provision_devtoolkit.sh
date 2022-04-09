@@ -2,9 +2,9 @@
 set -eu
 
 echo "Install wget, ant, maven, gradle"
-sudo yum install wget
-sudo yum install ant
-sudo yum install maven
+sudo yum install -y wget
+sudo yum install -y ant
+sudo yum install -y maven
 #curl -s "https://get.sdkman.io" | bash
 #source "/home/vagrant/.sdkman/bin/sdkman-init.sh"
 #sdk install gradle 
