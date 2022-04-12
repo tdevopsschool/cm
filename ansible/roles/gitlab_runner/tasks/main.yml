@@ -24,16 +24,22 @@
   register: result
   until: result is not failed
 
-# we search for the line in the config
-# In the next tasks we will use for detecting runner registration status
-- name: Ensure config.toml contains registred executor
-  lineinfile:
-    path: "{{ gitlab_runner_config_path }}"
-    line: '  name = "{{ inventory_hostname }}"'
-    state: absent
-  check_mode: true
-  changed_when: false
-  register: gitlab_result_registred_executor
+# We collect data on all registered runners
+- name: List configured runners
+  command: "gitlab-runner list"
+  register: configured_runners
+  changed_when: False
+  check_mode: no
+  become: yes
+
+# We collect data on all registered runners
+- name: Check runner is registered
+  command: "gitlab-runner verify"
+  register: verified_runners
+  ignore_errors: True
+  changed_when: False
+  check_mode: no
+  become: yes
 
 # update the config only if the runner is not presented
 # this check is required because gitlab-runner -register command adds strings into the config
@@ -46,7 +52,7 @@
     dest: "{{ gitlab_runner_config_path }}"
     src: config.toml
   when:
-    - not gitlab_result_registred_executor.found
+    - (configured_runners.stderr.find('\n' +  (ansible_hostname)) == -1)
   notify: Restart gitlab-runner.service
 
 - name: Include register gitlab-runner tasks
