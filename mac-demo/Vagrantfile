@@ -25,7 +25,6 @@ Vagrant.configure('2') do |config|
   
   config.vm.box = 'centos/7'
   
-  #config.ssh.insert_key = false
   config.vm.synced_folder '../', '/vagrant', mount_options: ['dmode=775,fmode=755']
     
   # config.vm.provision "shell", path: "../vagrant/provision_devtoolkit.sh"
