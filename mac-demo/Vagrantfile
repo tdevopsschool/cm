@@ -34,6 +34,6 @@ Vagrant.configure('2') do |config|
     ansible.galaxy_roles_path = "/home/vagrant/.ansible/roles"
     ansible.galaxy_role_file = "/vagrant/vagrant/requirements.yml"
     ansible.playbook = "/vagrant/vagrant/provision_me.yml"
-    ansible.verbose = 'vvv'
+    ansible.verbose = 'v'
   end
 end
